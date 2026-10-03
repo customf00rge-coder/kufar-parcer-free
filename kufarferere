@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>СережаМояшкинДелайКлизму · Kufar ПК Витебск</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: #090d16;
+      color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #1e293b;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 12px #10b981;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+    .btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-emerald { background: #10b981; color: #090d16; }
+    .btn-emerald:hover { background: #34d399; }
+    .btn-dark { background: #1e293b; color: #f1f5f9; border-color: #334155; }
+    .btn-dark:hover { background: #334155; }
+    .badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: #022c22;
+      border: 1px solid #065f46;
+      color: #34d399;
+    }
+    main {
+      flex: 1;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .toolbar {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .cats { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+    .cat-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      background: #1e293b;
+      color: #94a3b8;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .cat-btn.active, .cat-btn:hover { background: #10b981; color: #090d16; font-weight: 700; }
+    .search-row { display: flex; gap: 10px; }
+    .search-input {
+      flex: 1;
+      background: #090d16;
+      border: 1px solid #334155;
+      padding: 8px 14px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 13px;
+    }
+    .search-input:focus { outline: none; border-color: #10b981; }
+    .ads-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s;
+    }
+    .card:hover { border-color: #10b981; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+    .card-img-wrap {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #090d16;
+      position: relative;
+    }
+    .card-img { width: 100%; height: 100%; object-fit: cover; }
+    .card-body { padding: 14px; display: flex; flex-direction: column; justify-content: space-between; flex: 1; gap: 8px; }
+    .card-meta { font-size: 11px; color: #64748b; }
+    .card-title { font-size: 13px; font-weight: 600; color: #f8fafc; line-height: 1.4; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #1e293b; padding-top: 10px; margin-top: 6px; }
+    .price-byn { font-size: 16px; font-weight: 700; color: #10b981; font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span>СережаМояшкинДелайКлизму</span>
+    </div>
+    <div class="header-actions">
+      <span class="badge" id="timer-badge">Таймер: 5:00</span>
+      <select id="interval-select" class="btn btn-dark" style="padding: 6px 10px;">
+        <option value="1">1 мин</option>
+        <option value="3">3 мин</option>
+        <option value="5" selected>5 мин</option>
+        <option value="10">10 мин</option>
+      </select>
+      <button class="btn btn-emerald" id="refresh-btn">⟳ Обновить сейчас</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="toolbar">
+      <div class="cats">
+        <button class="cat-btn active" data-cat="all">Все категории</button>
+        <button class="cat-btn" data-cat="pc">ПК в сборе</button>
+        <button class="cat-btn" data-cat="gpu">Видеокарты</button>
+        <button class="cat-btn" data-cat="cpu">Процессоры</button>
+        <button class="cat-btn" data-cat="mb">Материнские платы</button>
+        <button class="cat-btn" data-cat="ram">ОЗУ</button>
+        <button class="cat-btn" data-cat="ssd">SSD / HDD</button>
+        <button class="cat-btn" data-cat="psu">Блоки питания</button>
+      </div>
+      <div class="search-row">
+        <input type="text" class="search-input" id="search-input" placeholder="Быстрый поиск: RTX 3060, Ryzen 5 3600, B550, Kingston..." />
+      </div>
+    </div>
+
+    <div class="ads-grid" id="ads-container">
+      <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #64748b;">Загрузка объявлений Kufar (г. Витебск)...</div>
+    </div>
+  </main>
+
+  <script>
+    let allAds = [];
+    let activeCat = 'all';
+    let searchQuery = '';
+    let intervalMinutes = 5;
+    let secondsLeft = intervalMinutes * 60;
+    let timerId = null;
+
+    // Web Audio Synthesizer for alerts
+    function playBeep() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.4);
+      } catch (e) {}
+    }
+
+    async function fetchAds() {
+      const container = document.getElementById('ads-container');
+      const refreshBtn = document.getElementById('refresh-btn');
+      refreshBtn.textContent = 'Загрузка...';
+
+      try {
+        const urls = [
+          'https://api.kufar.by/search-api/v1/search/rendered-paginated?cat=16010&rgn=6&ar=18&sort=lst.d&size=30',
+          'https://api.kufar.by/search-api/v1/search/rendered-paginated?cat=16020&rgn=6&ar=18&sort=lst.d&size=20'
+        ];
+
+        let fetched = [];
+        for (const u of urls) {
+          const r = await fetch(u);
+          if (r.ok) {
+            const d = await r.json();
+            if (d.ads) fetched.push(...d.ads);
+          }
+        }
+
+        fetched.sort((a, b) => new Date(b.list_time).getTime() - new Date(a.list_time).getTime());
+        allAds = fetched;
+        render();
+        playBeep();
+      } catch (err) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #ef4444;">Ошибка запроса. Проверьте интернет-соединение.</div>';
+      } finally {
+        refreshBtn.textContent = '⟳ Обновить сейчас';
+        secondsLeft = intervalMinutes * 60;
+      }
+    }
+
+    function render() {
+      const container = document.getElementById('ads-container');
+      let list = allAds;
+
+      if (activeCat === 'pc') {
+        list = list.filter(a => (a.subject || '').toLowerCase().includes('компьютер') || (a.category_name || '').includes('системные'));
+      } else if (activeCat === 'gpu') {
+        list = list.filter(a => /(?:rtx|gtx|rx|видеокарт)/i.test(a.subject || ''));
+      } else if (activeCat === 'cpu') {
+        list = list.filter(a => /(?:ryzen|core i|процессор)/i.test(a.subject || ''));
+      } else if (activeCat === 'mb') {
+        list = list.filter(a => /(?:материнск|b450|b550|b660|z690)/i.test(a.subject || ''));
+      } else if (activeCat === 'ram') {
+        list = list.filter(a => /(?:ddr3|ddr4|ddr5|оперативная)/i.test(a.subject || ''));
+      } else if (activeCat === 'ssd') {
+        list = list.filter(a => /(?:ssd|nvme|диск)/i.test(a.subject || ''));
+      } else if (activeCat === 'psu') {
+        list = list.filter(a => /(?:питания|бп )/i.test(a.subject || ''));
+      }
+
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        list = list.filter(a => (a.subject || '').toLowerCase().includes(q));
+      }
+
+      if (list.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #64748b;">Объявлений по заданному фильтру не найдено</div>';
+        return;
+      }
+
+      container.innerHTML = list.map(ad => {
+        const price = (Number(ad.price_byn) / 100).toFixed(0);
+        const imgPath = ad.images?.[0]?.path;
+        const imgUrl = imgPath ? 'https://rms.kufar.by/v1/gallery/' + imgPath : '';
+        const dateStr = new Date(ad.list_time).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+        const link = ad.ad_link || ('https://www.kufar.by/item/' + ad.ad_id);
+
+        return `
+          <div class="card">
+            <div class="card-img-wrap">
+              ${imgUrl ? `<img class="card-img" src="${imgUrl}" />` : `<div style="display:flex;height:100%;align-items:center;justify-content:center;color:#64748b;font-size:12px;">Без фото</div>`}
+            </div>
+            <div class="card-body">
+              <div class="card-meta">Витебск · ${dateStr}</div>
+              <div class="card-title">${ad.subject}</div>
+              <div class="card-footer">
+                <span class="price-byn">${price > 0 ? price + ' р.' : 'Договорная'}</span>
+                <a href="${link}" target="_blank" class="btn btn-dark" style="padding: 4px 10px; font-size: 11px; text-decoration: none;">На Kufar ↗</a>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Event listeners
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        activeCat = e.target.dataset.cat;
+        render();
+      });
+    });
+
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      render();
+    });
+
+    document.getElementById('interval-select').addEventListener('change', (e) => {
+      intervalMinutes = Number(e.target.value);
+      secondsLeft = intervalMinutes * 60;
+    });
+
+    document.getElementById('refresh-btn').addEventListener('click', fetchAds);
+
+    // Timer countdown
+    setInterval(() => {
+      if (secondsLeft > 0) {
+        secondsLeft--;
+        const m = Math.floor(secondsLeft / 60);
+        const s = (secondsLeft % 60).toString().padStart(2, '0');
+        document.getElementById('timer-badge').textContent = 'Таймер: ' + m + ':' + s;
+      } else {
+        fetchAds();
+      }
+    }, 1000);
+
+    // Initial load
+    fetchAds();
+  </script>
+</body>
+</html>
